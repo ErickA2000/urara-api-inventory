@@ -1,0 +1,28 @@
+{
+  "name": "api-inventory",
+  "version": "1.0.0",
+  "description": "microservicio de inventario",
+  "main": "server.js",
+  "dependencies": {
+    
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/ErickA2000/urara-api-inventory.git"
+  },
+  "keywords": [
+    "api",
+    "service",
+    "inventory"
+  ],
+  "author": "Erick Arevalo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ErickA2000/urara-api-inventory/issues"
+  },
+  "homepage": "https://github.com/ErickA2000/urara-api-inventory#readme"
+}
