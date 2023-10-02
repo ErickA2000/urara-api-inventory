@@ -21,21 +21,30 @@ export const verificarDatosObligatoriosPrenda = ( req: Request, res: Response, n
 }
 
 export const verificarExisteReferencia = async ( req: Request, res: Response, next: NextFunction ) => {
-    const foundReferencia = await prendaDAO.getOneBy( "ref", req.body.referencia );
     
-    if( req.params.prendaId && req.method.includes("PUT") ){
+    try {
         
-        if( foundReferencia?._id != req.params.prendaId ) return res.status(CODES_HTTP.CONFLICT).json({ 
+        const foundReferencia = await prendaDAO.getOneBy( "ref", req.body.referencia );
+        
+        if( req.params.prendaId && req.method.includes("PUT") ){
+            
+            if( foundReferencia?._id != req.params.prendaId ) return res.status(CODES_HTTP.CONFLICT).json({ 
+                success: false,
+                message: "Ya existe la referencia" 
+            });
+        }else if( foundReferencia ) return res.status(CODES_HTTP.CONFLICT).json({ 
             success: false,
             message: "Ya existe la referencia" 
         });
-    }else if( foundReferencia ) return res.status(CODES_HTTP.CONFLICT).json({ 
-        success: false,
-        message: "Ya existe la referencia" 
-    });
-
-
-    next();
+    
+    
+        next();
+    } catch (error) {
+        return res.status(CODES_HTTP.INTERNAL_SERVER_ERROR).json({
+            success: false,
+            message: "Algo va mal: " + error
+        });
+    }
 }
 
 export const verificarExisteCategoria = async ( req: Request, res: Response, next: NextFunction ) => {
@@ -67,13 +76,30 @@ export const verificarExisteCategoria = async ( req: Request, res: Response, nex
 export const verificarCategoria = async ( req: Request, res: Response, next: NextFunction ) => {
     const { nombre } = req.body;
 
-    const categoria = await categoriaDAO.getCategoriaByName( nombre );
-    if( categoria ) return res.status(CODES_HTTP.CONFLICT).json({
-        success: false,
-        message: `La categoria ${nombre} ya se encuentra registrada`
-    })
+    try {
+        const categoria = await categoriaDAO.getCategoriaByName( nombre );
 
-    next();
+        if( req.params.categoriaId && req.method.includes("PUT") ){
+            if( categoria != null && categoria._id != req.params.categoriaId ) return res.status(CODES_HTTP.CONFLICT).json({
+                success: false,
+                message: "Ya existe la categoria"
+            });
+
+        }else if( categoria ) return res.status(CODES_HTTP.CONFLICT).json({
+            success: false,
+            message: `La categoria ${nombre} ya se encuentra registrada`
+        });
+        
+        
+        next();
+        
+    } catch (error) {
+        return res.status(CODES_HTTP.INTERNAL_SERVER_ERROR).json({
+            success: false,
+            message: "Algo va mal: " + error
+        });
+    }
+
 }
 
 export const verificarTallaCantidad = async ( req: Request, res: Response, next: NextFunction ) => {

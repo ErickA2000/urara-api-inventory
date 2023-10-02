@@ -15,13 +15,13 @@ class PrendaRoutes {
        this.router.get('/:prendaSlug', prendaController.getPrendaBySlug)
        this.router.get('/ref/:referencia', prendaController.getPrendaByReferencia)
         
-       this.router.post('/', [ autenticacion.TokenValidation, autenticacion.isModerador,  cleanRequest.cleanPrenda,
+       this.router.post('/', [ autenticacion.TokenValidation, autenticacion.isModerador, readRequest.decryptRequest, cleanRequest.cleanPrenda,
         validacion.verificarDatosObligatoriosPrenda, validacion.verificarExisteReferencia, 
         validacion.verificarExisteCategoria, validacion.verificarTallaCantidad], 
         prendaController.createPrenda)
 
        this.router.put('/:prendaId', [autenticacion.TokenValidation, autenticacion.isAdmin, validacion.verificarLongitud_id, validacion.verificarExisteReferencia,
-         cleanRequest.cleanPrenda, 
+        readRequest.decryptRequest, cleanRequest.cleanPrenda, 
         validacion.verificarDatosObligatoriosPrenda, validacion.verificarExisteCategoria,
         validacion.verificarTallaCantidad], 
         prendaController.updatePrendaById)

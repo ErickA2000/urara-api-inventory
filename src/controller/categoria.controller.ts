@@ -17,12 +17,23 @@ class CategoriaController {
     public async getCategoriasPaginate( req: Request, res: Response ){
         const limit: number = req.query.limit as unknown as number || 5;
         const page: number = req.query.page as unknown as number || 1;
+        const sort: string = req.query.sort as unknown as string || "";
 
-        const categorias = await categoriaDAO.getCategoriasPaginate( page, limit );
-        res.status(CODES_HTTP.OK).json({ 
-            success: true,
-            data: categorias
-        })
+        try {
+            
+            const categorias = await categoriaDAO.getCategoriasPaginate( page, limit, sort );
+            
+            res.status(CODES_HTTP.OK).json({ 
+                success: true,
+                data: categorias
+            });
+        } catch (error) {
+            return res.status(CODES_HTTP.INTERNAL_SERVER_ERROR).json({
+                success: false,
+                message: "Algo va mal: "+ error
+            });
+        }
+
     }
 
     public async getCategoriaByName( req: Request, res: Response ){
@@ -101,9 +112,23 @@ class CategoriaController {
     }
 
     public async deleteCategoriaById( req: Request, res: Response ){
-        await categoriaDAO.deleteCategoriaById( req.params.categoriaId );
-        showCateLog.info({ message: `Categoria eliminada - user --> ${req.userId}` })
-        res.status(CODES_HTTP.NO_CONTENT).json()
+
+        try {
+            
+            const categoriaDelete = await categoriaDAO.deleteCategoriaById( req.params.categoriaId );
+
+            if( categoriaDelete === null ) throw Error("La categoria no existe");
+
+            showCateLog.info({ message: `Categoria eliminada - user --> ${req.userId}` })
+            res.status(CODES_HTTP.NO_CONTENT).json()
+        } catch (error) {
+            showCateLog.info({ message: `Error al eliminar categoria -Error ${error} - user --> ${req.userId}` });
+            return res.status(CODES_HTTP.INTERNAL_SERVER_ERROR).json({
+                success: false,
+                message: "Algo va mal: " + error
+            });
+        }
+
     }
 }
 

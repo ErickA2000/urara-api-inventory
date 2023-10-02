@@ -1,5 +1,6 @@
 import { ICategoria, ICategoriaDocument } from "@Interfaces/categoria.interfaces";
 import Categoria from "@Models/Categoria";
+import { PaginateOptions } from "mongoose";
 
 class CategoriaDAO {
 
@@ -12,15 +13,21 @@ class CategoriaDAO {
         )
     }
 
-    async getCategoriasPaginate( page: number, limit: number ){
-       const options = {
+    async getCategoriasPaginate( page: number, limit: number, sort: string ){
+       const options: PaginateOptions = {
         limit,
-        page
+        page, 
+        sort
        };
-       return await Categoria.paginate({}, options)
+       return new Promise( (resolve, reject) => Categoria
+        .paginate({}, options, (err, docs) => {
+            if(err) return reject(err);
+            return resolve(docs);
+        }) 
+        ) 
     }
 
-    async getCategoriaByName( name: string ){
+    async getCategoriaByName( name: string ): Promise<ICategoriaDocument | null>{
         return new Promise( (resolve, reject) => Categoria
             .findOne( { nombre: name } ).exec( ( err, docs ) => {
                 if( err ) return reject(err);

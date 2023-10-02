@@ -19,7 +19,7 @@ class CategoriaRoutes {
             categoriaController.createCategoria )
         
         this.router.put('/update/:categoriaId', [ autenticacion.TokenValidation, autenticacion.isAdmin, validacion.verificarLongitud_id,
-            readRequest.decryptRequest, cleanRequest.cleanCategoria ],       //validacion.verificarCategoria
+            readRequest.decryptRequest, cleanRequest.cleanCategoria, validacion.verificarCategoria ],       
             categoriaController.updateCategoriaById)
         
         this.router.put( '/cambioestado/:categoriaId', [ autenticacion.TokenValidation, autenticacion.isModerador, validacion.verificarLongitud_id,
