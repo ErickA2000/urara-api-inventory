@@ -14,12 +14,12 @@ class TallaRoutes {
         this.router.get('/p', tallaController.getTallasPaginate);
         this.router.get('/:numero', tallaController.getTallaByNumber);
         
-        this.router.post('/create', [ autenticacion.TokenValidation, autenticacion.isModerador, readRequest.decryptRequest,
+        this.router.post('/create', [ autenticacion.TokenValidation, autenticacion.isModerador, 
             validacion.vefificarExisteTalla ],
             tallaController.createTalla)
         
         this.router.put('/update/:tallaId', [ autenticacion.TokenValidation, autenticacion.isAdmin, validacion.verificarLongitud_id, 
-            readRequest.decryptRequest, validacion.vefificarExisteTalla ],
+             validacion.vefificarExisteTalla ],
             tallaController.updateTallaById);
 
         this.router.delete('/delete/:tallaId', [ autenticacion.TokenValidation, autenticacion.isAdmin, validacion.verificarLongitud_id ],

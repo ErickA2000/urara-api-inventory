@@ -75,11 +75,23 @@ class TallaController {
 
     public async deleteTallaById( req: Request, res: Response ){
         
-        await tallaDAO.deleteTallaById( req.params.tallaId );
-        showTallaLog.info({ message: `Se elimino una talla - user -> ${req.userId}` })
-        res.status(CODES_HTTP.OK).json({
-            success: true
-        })
+        try {
+            
+            const talladelete = await tallaDAO.deleteTallaById( req.params.tallaId );
+
+            if( talladelete === null ) throw Error("La talla mo existe");
+
+            showTallaLog.info({ message: `Se elimino una talla - user -> ${req.userId}` })
+            res.status(CODES_HTTP.OK).json({
+                success: true
+            });
+        } catch (error) {
+            return res.status(CODES_HTTP.INTERNAL_SERVER_ERROR).json({
+                success: false,
+                message: "Algo va mal: " + error
+            });
+        }
+
     }
 
 }

@@ -19,7 +19,7 @@ class TallaDAO {
         return await Talla.paginate({}, options)
     }
 
-    async getTallaByNumber( number: string ){
+    async getTallaByNumber( number: string ): Promise<ITalla | null>{
         return new Promise( ( resolve, reject ) => Talla
             .findOne( { numero: number } ).exec( (err, docs) => {
                 if(err) return reject(err);

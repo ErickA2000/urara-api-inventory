@@ -133,13 +133,30 @@ export const verificarTallaCantidad = async ( req: Request, res: Response, next:
 
 export const vefificarExisteTalla = async ( req: Request, res: Response, next: NextFunction ) => {
     const { numero } = req.body;
-    const foundTalla = await tallaDAO.getTallaByNumber( numero );
-    if( foundTalla ) return res.status(CODES_HTTP.CONFLICT).json({ 
-        success: false,
-        message: "La talla ya existe" 
-    })
+    
+    try {
+        
+        const foundTalla = await tallaDAO.getTallaByNumber( numero );
 
-    next();
+        if( req.params.tallaId && req.method.includes("PUT") ){
+
+            if( foundTalla != null && foundTalla._id != req.params.tallaId ) return res.status(CODES_HTTP.CONFLICT).json({
+                success: false,
+                message: "La talla ya existe"
+            });
+
+        }else if( foundTalla ) return res.status(CODES_HTTP.CONFLICT).json({ 
+            success: false,
+            message: "La talla ya existe" 
+        })
+    
+        next();
+    } catch (error) {
+        return res.status(CODES_HTTP.INTERNAL_SERVER_ERROR).json({
+            success: false,
+            message: "Algo va mal: " + error
+        });
+    }
 }
 
 export const verificarLongitud_id = ( req: Request, res: Response, next: NextFunction ) => {

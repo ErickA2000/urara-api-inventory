@@ -14,7 +14,7 @@ class ColorRoutes {
         this.router.get('/p', colorController.getColorPaginate);
         this.router.get('/:IDcolor', [ validacion.verificarLongitud_id ], colorController.getColorById);
 
-        this.router.post('/add', [ autenticacion.TokenValidation, autenticacion.isModerador,cleanRequest.cleanColores ], colorController.addColor)
+        this.router.post('/add', [ autenticacion.TokenValidation, autenticacion.isModerador, cleanRequest.cleanColores ], colorController.addColor)
 
         this.router.put('/update/:IDcolor', [ autenticacion.TokenValidation, autenticacion.isAdmin, validacion.verificarLongitud_id,
             cleanRequest.cleanColores ], colorController.updateColor);
