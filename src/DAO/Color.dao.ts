@@ -36,6 +36,16 @@ class ColorDAO {
         )
     }
 
+    async getOneByName( nameColor: string ): Promise<IcolorDocument | null>{
+        return new Promise( (resolve, reject) => Color
+            .findOne( { nombre: nameColor } )
+            .exec( (err, docs) => {
+                if(err) return reject(err);
+                return resolve(docs)
+            } )
+        )
+    }
+
     async addColor( color: Icolor ): Promise<IcolorDocument>{
         return new Promise( async (resolve, reject) => {
             const newColor = new Color(color);

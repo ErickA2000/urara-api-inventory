@@ -4,6 +4,7 @@ import { prendaDAO } from '@DAO/Prenda.dao';
 import { categoriaDAO } from '@DAO/Categoria.dao';
 import { tallaDAO } from '@DAO/Talla.dao';
 import { CODES_HTTP } from '@Constants/global';
+import { colorDAO } from '@DAO/Color.dao';
 
 
 export const verificarDatosObligatoriosPrenda = ( req: Request, res: Response, next: NextFunction ) => {
@@ -180,4 +181,30 @@ export const verificarLongitud_id = ( req: Request, res: Response, next: NextFun
     }
     
     next();
+}
+
+export const verificarExisteColor = async ( req: Request, res: Response, next: NextFunction ) => {
+    const { nombre } = req.body;
+
+    try {
+        const foundColor = await colorDAO.getOneByName( nombre );
+
+        if( req.params.IDcolor && req.method.includes("PUT") ){
+            if( foundColor != null && foundColor._id != req.params.IDcolor ) return res.status(CODES_HTTP.CONFLICT).json({
+                success: false,
+                message: "El color ya existe"
+            })
+        }else if( foundColor ) return res.status(CODES_HTTP.CONFLICT).json({
+            success: false,
+            message: "El color ya existe"
+        });
+
+        next();
+
+    } catch (error) {
+        return res.status(CODES_HTTP.INTERNAL_SERVER_ERROR).json({
+            success: false,
+            message: "Algo va mal: " + error
+        })
+    }
 }

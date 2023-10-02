@@ -99,13 +99,15 @@ class ColorController {
     public async deleteColor( req: Request, res: Response ){
         try {
             if( !req.params.IDcolor ) throw "Falta el id del color";
-            await colorDAO.deleteById( req.params.IDcolor );
+            const color = await colorDAO.deleteById( req.params.IDcolor );
+
+            if( !color ) throw Error("El color no existe");
 
             res.sendStatus(CODES_HTTP.NO_CONTENT);
         } catch (error) {
             return res.status(CODES_HTTP.INTERNAL_SERVER_ERROR).json({
                 success: false,
-                message: error
+                message: "Algo va mal: " + error
             });
         }
     }

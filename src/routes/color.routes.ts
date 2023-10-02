@@ -14,12 +14,14 @@ class ColorRoutes {
         this.router.get('/p', colorController.getColorPaginate);
         this.router.get('/:IDcolor', [ validacion.verificarLongitud_id ], colorController.getColorById);
 
-        this.router.post('/add', [ autenticacion.TokenValidation, autenticacion.isModerador, cleanRequest.cleanColores ], colorController.addColor)
+        this.router.post('/add', [ autenticacion.TokenValidation, autenticacion.isModerador, validacion.verificarExisteColor, readRequest.decryptRequest,
+            cleanRequest.cleanColores ], colorController.addColor)
 
-        this.router.put('/update/:IDcolor', [ autenticacion.TokenValidation, autenticacion.isAdmin, validacion.verificarLongitud_id,
-            cleanRequest.cleanColores ], colorController.updateColor);
+        this.router.put('/update/:IDcolor', [ autenticacion.TokenValidation, autenticacion.isModerador, validacion.verificarLongitud_id, 
+            validacion.verificarExisteColor, readRequest.decryptRequest, cleanRequest.cleanColores ], colorController.updateColor);
 
-        this.router.delete('/delete/:IDcolor', [ autenticacion.TokenValidation, autenticacion.isAdmin, validacion.verificarLongitud_id ], colorController.deleteColor);
+        this.router.delete('/delete/:IDcolor', [ autenticacion.TokenValidation, autenticacion.isAdmin, validacion.verificarLongitud_id ], 
+        colorController.deleteColor);
     }
 }
 
