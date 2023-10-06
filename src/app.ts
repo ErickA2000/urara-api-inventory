@@ -26,7 +26,7 @@ class App{
         exposedHeaders: ['token'],
         origin: ['http://localhost:4200', 'https://panel-urara.netlify.app', 
         'http://192.168.1.19:4200', 'http://localhost:45537', 
-        "http://localhost:8080"]
+        "http://localhost:8000"]
 
     }
 
