@@ -20,8 +20,8 @@ class PrendaRoutes {
         validacion.verificarExisteCategoria, validacion.verificarTallaCantidad], 
         prendaController.createPrenda)
 
-       this.router.put('/:prendaId', [autenticacion.TokenValidation, autenticacion.isAdmin, validacion.verificarLongitud_id, validacion.verificarExisteReferencia,
-        readRequest.decryptRequest, cleanRequest.cleanPrenda, 
+       this.router.put('/:prendaId', [autenticacion.TokenValidation, autenticacion.isAdmin, validacion.verificarLongitud_id, 
+        readRequest.decryptRequest, cleanRequest.cleanPrenda, validacion.verificarExisteReferencia,
         validacion.verificarDatosObligatoriosPrenda, validacion.verificarExisteCategoria,
         validacion.verificarTallaCantidad], 
         prendaController.updatePrendaById)

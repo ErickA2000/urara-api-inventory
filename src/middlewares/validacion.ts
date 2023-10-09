@@ -24,7 +24,7 @@ export const verificarDatosObligatoriosPrenda = ( req: Request, res: Response, n
 export const verificarExisteReferencia = async ( req: Request, res: Response, next: NextFunction ) => {
     
     try {
-        
+        console.log(req.body)
         const foundReferencia = await prendaDAO.getOneBy( "ref", req.body.referencia );
         
         if( req.params.prendaId && req.method.includes("PUT") ){
