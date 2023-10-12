@@ -24,7 +24,7 @@ class PrendaDAO{
         };
 
         if( find?.categoria === "" ) delete find.categoria;
-        if( !find?.descuento ) delete find?.descuento;
+        if( find?.discount === false ) delete find?.discount;
 
         return new Promise( (resolve, reject) => Prenda
             .paginate( find, options, (err, docs) => {

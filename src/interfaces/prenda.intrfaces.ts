@@ -40,5 +40,5 @@ interface color extends Document{
 
 export interface FindOptions{
     categoria?: string;
-    descuento?: boolean
+    discount?: boolean
 }

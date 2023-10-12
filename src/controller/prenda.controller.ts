@@ -22,11 +22,11 @@ class PrendaController {
         const page: number = req.query.page as unknown as number || 1;
         const sort: string = req.query.sort as unknown as string || "";
         const categoria: string = req.query.categoria as unknown as string || "";
-        const descuento: boolean = req.query.discount as unknown as boolean || false;
+        const discount: boolean = req.query.discount as unknown as boolean || false;
 
         try {
             
-            const prendas = await prendaDAO.getAllPaginate(page, limit, sort, { categoria, descuento });
+            const prendas = await prendaDAO.getAllPaginate(page, limit, sort, { categoria, discount });
 
             res.status(CODES_HTTP.OK).json({
                 success: true,
