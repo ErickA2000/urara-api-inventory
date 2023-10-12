@@ -22,10 +22,11 @@ class PrendaController {
         const page: number = req.query.page as unknown as number || 1;
         const sort: string = req.query.sort as unknown as string || "";
         const categoria: string = req.query.categoria as unknown as string || "";
+        const descuento: boolean = req.query.discount as unknown as boolean || false;
 
         try {
             
-            const prendas = await prendaDAO.getAllPaginate(page, limit, sort, { categoria });
+            const prendas = await prendaDAO.getAllPaginate(page, limit, sort, { categoria, descuento });
 
             res.status(CODES_HTTP.OK).json({
                 success: true,
@@ -84,8 +85,13 @@ class PrendaController {
         //Asignar decuento por defecto en 0
         if( !descuento || descuento === undefined ){
             newPrenda.descuento = 0;
+            newPrenda.discount = false;
         }else{
             newPrenda.descuento = descuento;
+
+            if( descuento != 0 ) newPrenda.discount = true;
+            if( descuento === 0 ) newPrenda.discount = false;
+
         }
         
         //Asignar categoria
@@ -111,7 +117,8 @@ class PrendaController {
     }
 
     public async updatePrendaById( req: Request, res: Response ){
-        const { categoria } = req.body
+        const { categoria, descuento } = req.body;
+
         //Asignar categoria
         if( categoria ){
             const foundCategoria = await categoriaDAO.getFind( categoria );
@@ -123,6 +130,11 @@ class PrendaController {
         const slug = req.body.nombre.replace(regExp, '-')
         
         req.body.slug = slug;
+
+        //Cambiar estado de discount segun el porcentaje de descuento
+        if( descuento === 0 ) req.body.discount = false;
+        if( descuento != 0 ) req.body.discount = true;
+        
         const updatedPrenda = await prendaDAO.updateById( req.params.prendaId, req.body );
     
         showPrendaLog.info({ message: `La prenda ${updatedPrenda!.nombre} fue modificada - user -> ${req.userId}` });

@@ -8,6 +8,7 @@ export interface Iprenda {
     descripcion?: string,
     tallasCantidadPrecio?: [tallaCantidadPrecio],
     descuento?: number,
+    discount?: boolean,
     estado?: string,
     categoria?: any
 }
@@ -20,6 +21,7 @@ export interface IprendaDocument extends Document{
     descripcion: string,
     tallasCantidadPrecio: [tallaCantidadPrecio],
     descuento: number,
+    discount: boolean,
     estado: string,
     categoria: any
 }
@@ -38,5 +40,5 @@ interface color extends Document{
 
 export interface FindOptions{
     categoria?: string;
-    
+    descuento?: boolean
 }

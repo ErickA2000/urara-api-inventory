@@ -39,6 +39,7 @@ const prendaSchema = new Schema({
     descripcion: String,
     tallasCantidadPrecio: [tallaCantidadPrecioSchema],
     descuento: Number,
+    discount: Boolean,
     estado: String,
     categoria: [{
         ref: "Categorias",
