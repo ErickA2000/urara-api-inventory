@@ -25,11 +25,11 @@ export const verificarExisteReferencia = async ( req: Request, res: Response, ne
     
     try {
         
-        const foundReferencia = await prendaDAO.getOneBy( "ref", req.body.referencia );
+        const foundReferencia = await prendaDAO.getOneBy( "ref", req.body.referencia  );
         
         if( req.params.prendaId && req.method.includes("PUT") ){
             
-            if( foundReferencia?._id != req.params.prendaId ) return res.status(CODES_HTTP.CONFLICT).json({ 
+            if( foundReferencia && foundReferencia?._id != req.params.prendaId ) return res.status(CODES_HTTP.CONFLICT).json({ 
                 success: false,
                 message: "Ya existe la referencia" 
             });
